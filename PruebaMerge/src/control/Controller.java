@@ -1,10 +1,14 @@
 package control;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+
 
 public class Controller {
 	
@@ -15,8 +19,8 @@ public class Controller {
 		String rutaFicheroImpar = "ficheros/ficheroImpares.txt";
 		/*******************************************************/
 		Controller controller = new Controller();
-		ArrayList<String> listadoDatosPares = controller.mergeoDatosFichero(rutaFicheroPar);
-		ArrayList<String> listadoDatosImpares = controller.mergeoDatosFichero(rutaFicheroImpar);
+		ArrayList<Integer> listadoDatosPares = controller.mergeoDatosFichero(rutaFicheroPar);
+		ArrayList<Integer> listadoDatosImpares = controller.mergeoDatosFichero(rutaFicheroImpar);
 		
 
 	}
@@ -29,20 +33,20 @@ public class Controller {
 	// en el fichero3 tendrá que aparecer todos los datos de ambos ficheros ordenados
 			
 	
-	// 1era opcion .- hacerlo metiendo los datos en dos array list en metodos diferentes y despues en otro metodo compararlo y
-		// crear el tercer fichero
+	// 1era opcion .- hacerlo metiendo los datos en dos arrayList llamando al mismo metodo de lectura
+	// para despues en otro metodo compararlo y crear el tercer fichero
 	// 2da opcion .- hacerlo todo de una tacada en un mismo metodo, leerlos, compararlos e introducirlo en un nuevo fichero
 	
 	/************************INICIO DE LA LOGICA*****************************************/
-	public ArrayList<String> mergeoDatosFichero(String rutaFichero) {
-		ArrayList<String> listaDatosFichero = new ArrayList<String>();
+	public ArrayList<Integer> mergeoDatosFichero(String rutaFichero) {
+		ArrayList<Integer> listaDatosFichero = new ArrayList<Integer>();
 		
 		try {
 			FileReader fr = new FileReader(rutaFichero);
 			BufferedReader br = new BufferedReader(fr);
 				String fichero;
 				while((fichero = br.readLine())!=null) {
-					listaDatosFichero.add(fichero);
+					listaDatosFichero.add(Integer.parseInt(fichero));
 				}
 			br.close();
 			fr.close();
@@ -55,6 +59,30 @@ public class Controller {
 	}
 	
 	
+	public void mezclarDatosDosListados(ArrayList<Integer> listadoDatosPares, ArrayList<Integer> listadoDatosImpares) {
+		int i = 0;
+		int j = 0;
+		int n = 0;
+		try {
+			FileWriter fw = new FileWriter("ficheros/ficheroTotalDatosOrdenados.txt");
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			while(n < listadoDatosPares.size() + listadoDatosImpares.size()) {
+				if(listadoDatosPares.get(i) < listadoDatosImpares.get(j)) {
+					bw.write(listadoDatosPares.get(i));
+					i++;
+				}else {
+					bw.write(listadoDatosImpares.get(i));
+					j++;
+				} 
+					n++;
+			}
+			bw.close();
+			fw.close();
+		} catch (IOException e) {
+			System.out.println("Error I/O");
+		}	
+	}
 	
 	
 	
