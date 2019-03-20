@@ -19,10 +19,10 @@ public class Controller {
 		String rutaFicheroImpar = "ficheros/ficheroImpares.txt";
 		/*******************************************************/
 		Controller controller = new Controller();
-		ArrayList<Integer> listadoDatosPares = controller.mergeoDatosFichero(rutaFicheroPar);
-		ArrayList<Integer> listadoDatosImpares = controller.mergeoDatosFichero(rutaFicheroImpar);
+		ArrayList<Integer> listadoDatosPares = controller.lecturaDatosFichero(rutaFicheroPar);
+		ArrayList<Integer> listadoDatosImpares = controller.lecturaDatosFichero(rutaFicheroImpar);
 		
-
+		controller.mezclarDatosDosListados(listadoDatosPares, listadoDatosImpares);
 	}
 	// practica nueva ->
 	// mirar el mergeo de datos en ficheros
@@ -38,7 +38,7 @@ public class Controller {
 	// 2da opcion .- hacerlo todo de una tacada en un mismo metodo, leerlos, compararlos e introducirlo en un nuevo fichero
 	
 	/************************INICIO DE LA LOGICA*****************************************/
-	public ArrayList<Integer> mergeoDatosFichero(String rutaFichero) {
+	public ArrayList<Integer> lecturaDatosFichero(String rutaFichero) {
 		ArrayList<Integer> listaDatosFichero = new ArrayList<Integer>();
 		
 		try {
@@ -65,8 +65,7 @@ public class Controller {
 		int n = 0;
 		try {
 			FileWriter fw = new FileWriter("ficheros/ficheroTotalDatosOrdenados.txt");
-			BufferedWriter bw = new BufferedWriter(fw);
-			
+			BufferedWriter bw = new BufferedWriter(fw);			
 			while(n < listadoDatosPares.size() + listadoDatosImpares.size()) {
 				if(listadoDatosPares.get(i) < listadoDatosImpares.get(j)) {
 					bw.write(listadoDatosPares.get(i));
@@ -81,9 +80,16 @@ public class Controller {
 			fw.close();
 		} catch (IOException e) {
 			System.out.println("Error I/O");
-		}	
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Error IndexOutOfBounds");
+			System.out.println();
+			if( i >= listadoDatosPares.size()) {
+				i--;
+			}else {
+				j--;
+			} n--;
+		}
 	}
-	
 	
 	
 	
